@@ -1,0 +1,64 @@
+{
+  "_from": "pwd-strength",
+  "_id": "pwd-strength@1.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-y3/3UDO7P+gzsnugn4Nq4KemshPdJ1MHIPGPbyiXvw7D4Ib1l5QeEiqC9Cna1vld4HaFfoMPwJX8Xr/+MW2Q6g==",
+  "_location": "/pwd-strength",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "pwd-strength",
+    "name": "pwd-strength",
+    "escapedName": "pwd-strength",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/pwd-strength/-/pwd-strength-1.0.0.tgz",
+  "_shasum": "1ccc118c7a90b02d22c3ae1815af237321e32878",
+  "_spec": "pwd-strength",
+  "_where": "C:\\nodejs\\pwd-strength",
+  "author": {
+    "name": "Raúl Polanco Montiel",
+    "email": "rapomon@gmail.com",
+    "url": "https://github.com/rapomon"
+  },
+  "bugs": {
+    "url": "https://github.com/rapomon/pwd-strength/issues"
+  },
+  "bundleDependencies": [],
+  "dependencies": {},
+  "deprecated": false,
+  "description": "This module takes a password string and validate it according to the specified rules.",
+  "devDependencies": {
+    "tap-spec": "^5.0.0",
+    "tape": "^4.9.1"
+  },
+  "homepage": "https://github.com/rapomon/pwd-strength",
+  "keywords": [
+    "password",
+    "strength",
+    "checker",
+    "validator",
+    "verify",
+    "verifier",
+    "score"
+  ],
+  "license": "ISC",
+  "main": "src/index.js",
+  "name": "pwd-strength",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rapomon/pwd-strength.git"
+  },
+  "scripts": {
+    "demo": "node ./index.js",
+    "test": "tape ./test/*spec.js | tap-spec"
+  },
+  "version": "1.0.0"
+}
