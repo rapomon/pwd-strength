@@ -45,9 +45,9 @@ minSpecialChar               | *At least %s number or special character please*
 minSpecialChars              | *At least %s numbers or special characters please*
 maxConsecutiveRepeatingChars | *No more than %s consecutive repeating characters or numbers please*
 
-## Language settings
+## Color settings
 
-Here is a list of the language settings currently available.
+Here is a list of the color settings depending on the strength currently available:
 
 Color setting | Default
 ------------- | --------------------------------------------
