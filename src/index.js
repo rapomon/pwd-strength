@@ -1,5 +1,3 @@
-const util = require('util');
-
 module.exports = function passwordStrength(value, options) {
 
     let defaults = {
@@ -120,6 +118,14 @@ module.exports = function passwordStrength(value, options) {
         }
     }
 
+    function format(msg, variable) {
+        if(typeof(msg) === 'string') {
+            return msg.replace('%s', variable);
+        } else {
+            return '';
+        }
+    }
+
     function calcComplexity() {
         score = baseScore +
                 (num.excess * settings.excess) +
@@ -148,23 +154,23 @@ module.exports = function passwordStrength(value, options) {
             result.color = colors.error;
         } else if (charPassword.length < settings.minPasswordLength) {
             result.message = settings.minPasswordLength !== 1 ? lang.minPasswordChars : lang.minPasswordChar;
-            result.message = util.format(result.message, settings.minPasswordLength);
+            result.message = format(result.message, settings.minPasswordLength);
             result.color = colors.error;
         } else if (num.lower < settings.minLowerChars) {
             result.message = settings.minLowerChars !== 1 ? lang.minLowerChars : lang.minLowerChar;
-            result.message = util.format(result.message, settings.minLowerChars);
+            result.message = format(result.message, settings.minLowerChars);
             result.color = colors.error;
         } else if (num.upper < settings.minUpperChars) {
             result.message = settings.minUpperChars !== 1 ? lang.minUpperChars : lang.minUpperChar;
-            result.message = util.format(result.message, settings.minUpperChars);
+            result.message = format(result.message, settings.minUpperChars);
             result.color = colors.error;
         } else if (num.symbols + num.numbers < settings.minSpecialChars) {
             result.message = settings.minSpecialChars !== 1 ? lang.minSpecialChars : lang.minSpecialChar;
-            result.message = util.format(result.message, settings.minSpecialChars);
+            result.message = format(result.message, settings.minSpecialChars);
             result.color = colors.error;
         } else if (settings.maxConsecutiveRepeatingChars > 1 && num.repeatingChars > settings.maxConsecutiveRepeatingChars) {
             result.message = lang.maxConsecutiveRepeatingChars;
-            result.message = util.format(result.message, settings.maxConsecutiveRepeatingChars);
+            result.message = format(result.message, settings.maxConsecutiveRepeatingChars);
             result.color = colors.error;
         } else if (score < 50) {
             result.success = true;
