@@ -19,7 +19,8 @@ Setting                      | Default     | Description
 debug                        | `false`     | Enable debug mode
 minUpperChars                | `1`         | Minimum uppercase characters required `[A-Z]`.
 minLowerChars                | `1`         | Minimum lowercase characters required `[a-z]`.
-minSpecialChars              | `1`         | Minimum numbers and symbols (any character not in `[a-zA-Z]`).
+minNumberChars               | `1`         | Minimum numbers required `[0-9]`.
+minSpecialChars              | `1`         | Minimum symbols required (any character not in `[a-zA-Z]`).
 minPasswordLength            | `8`         | Minimum password length required.
 maxConsecutiveRepeatingChars | `2`         | Maximum consecutive repeating characters allowed.
 lang                         | *See below* | Object with multi-language strings.
@@ -41,8 +42,10 @@ minLowerChar                 | *At least %s lowercase character please*
 minLowerChars                | *At least %s lowercase characters please*
 minUpperChar                 | *At least %s uppercase character please*
 minUpperChars                | *At least %s uppercase characters please*
-minSpecialChar               | *At least %s number or special character please*
-minSpecialChars              | *At least %s numbers or special characters please*
+minNumberChar                | *At least %s number please*
+minNumberChars               | *At least %s numbers please*
+minSpecialChar               | *At least %s special character please*
+minSpecialChars              | *At least %s special characters please*
 maxConsecutiveRepeatingChars | *No more than %s consecutive repeating characters or numbers please*
 
 ## Color settings
@@ -99,11 +102,18 @@ Minimum lowercase characters:
     // {"success":false,"key":"error","message":"At least 1 lowercase character please","color":"#ee0000"}
 ```
 
-Minimum numbers and symbols:
+Minimum numbers:
 
 ```js
-    console.log(passwordStrength('TestTest', { minSpecialChars: 1 }));
-    // {"success":false,"key":"error","message":"At least 1 number or special character please","color":"#ee0000"}
+    console.log(passwordStrength('TestTest', { minNumberChars: 1 }));
+    // {"success":false,"key":"error","message":"At least 1 number please","color":"#ee0000"}
+```
+
+Minimum symbols:
+
+```js
+    console.log(passwordStrength('TestTest1', { minSpecialChars: 1 }));
+    // {"success":false,"key":"error","message":"At least 1 special character please","color":"#ee0000"}
 ```
 
 Maximum consecutive repeating characters allowed:

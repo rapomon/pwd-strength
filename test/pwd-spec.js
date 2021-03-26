@@ -25,8 +25,15 @@ test('validate min upper chars', function(t) {
     t.end();
 });
 
-test('validate min special chars', function(t) {
+test('validate min numbers', function(t) {
     const result = passwordStrength('Test', {
+        minNumberChars: 1
+    });
+    t.equal(result.success, false);
+    t.end();
+});
+test('validate min special chars', function(t) {
+    const result = passwordStrength('Test1', {
         minSpecialChars: 1
     });
     t.equal(result.success, false);

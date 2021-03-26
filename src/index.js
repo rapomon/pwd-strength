@@ -4,7 +4,8 @@ module.exports = function passwordStrength(value, options) {
         debug: false,
         minUpperChars: 1, // Upper characters ([A-Z])
         minLowerChars: 1, // Lower characters ([a-z])
-        minSpecialChars: 1, // Numbers and symbols (any character not in [a-zA-Z])
+        minNumberChars: 1, // Numbers ([0-9])
+        minSpecialChars: 1, // Symbols (any character not in [a-zA-Z])
         minPasswordLength: 8, // Minimum password length
         maxConsecutiveRepeatingChars: 2, // Maximum consecutive repeating characters
         excess: 3,
@@ -23,8 +24,10 @@ module.exports = function passwordStrength(value, options) {
             minLowerChars: "At least %s lowercase characters please",
             minUpperChar: "At least %s uppercase character please",
             minUpperChars: "At least %s uppercase characters please",
-            minSpecialChar: "At least %s number or special character please",
-            minSpecialChars: "At least %s numbers or special characters please",
+            minNumberChar: "At least %s number please",
+            minNumberChars: "At least %s numbers please",
+            minSpecialChar: "At least %s special character please",
+            minSpecialChars: "At least %s special characters please",
             maxConsecutiveRepeatingChars: "No more than %s consecutive repeating characters or numbers please"
         },
         colors: {
@@ -131,7 +134,7 @@ module.exports = function passwordStrength(value, options) {
                 (num.excess * settings.excess) +
                 (num.upper * settings.minUpperChars) +
                 (num.lower * settings.minLowerChars) +
-                (num.numbers * settings.minSpecialChars) +
+                (num.numbers * settings.minNumberChars) +
                 (num.symbols * settings.minSpecialChars) +
                 settings.combo +
                 settings.flatLower +
@@ -164,7 +167,11 @@ module.exports = function passwordStrength(value, options) {
             result.message = settings.minUpperChars !== 1 ? lang.minUpperChars : lang.minUpperChar;
             result.message = format(result.message, settings.minUpperChars);
             result.color = colors.error;
-        } else if (num.symbols + num.numbers < settings.minSpecialChars) {
+        } else if (num.numbers < settings.minNumberChars) {
+            result.message = settings.minNumberChars !== 1 ? lang.minNumberChars : lang.minNumberChar;
+            result.message = format(result.message, settings.minNumberChars);
+            result.color = colors.error;
+        } else if (num.symbols < settings.minSpecialChars) {
             result.message = settings.minSpecialChars !== 1 ? lang.minSpecialChars : lang.minSpecialChar;
             result.message = format(result.message, settings.minSpecialChars);
             result.color = colors.error;
@@ -200,7 +207,7 @@ module.exports = function passwordStrength(value, options) {
                          + 'Length bonus: ' + (num.excess*settings.excess) + ' ['+num.excess+'x'+settings.excess+']\n'
                          + 'Upper case bonus: ' + (num.upper*settings.minUpperChars) + ' ['+num.upper+'x'+settings.minUpperChars+']\n'
                          + 'Lower case bonus: ' + (num.lower*settings.minLowerChars) + ' ['+num.lower+'x'+settings.minLowerChars+']\n'
-                         + 'Number bonus: ' + (num.numbers*settings.minSpecialChars) + ' ['+num.numbers+'x'+settings.minSpecialChars+']\n'
+                         + 'Number bonus: ' + (num.numbers*settings.minNumberChars) + ' ['+num.numbers+'x'+settings.minNumberChars+']\n'
                          + 'Symbol bonus: ' + (num.symbols*settings.minSpecialChars) + ' ['+num.symbols+'x'+settings.minSpecialChars+']\n'
                          + 'Combination bonus: ' + settings.combo + '\n'
                          + 'Lower case only penalty: ' + settings.flatLower + '\n'
