@@ -5,7 +5,7 @@ module.exports = function passwordStrength(value, options) {
         minUpperChars: 1, // Upper characters ([A-Z])
         minLowerChars: 1, // Lower characters ([a-z])
         minNumberChars: 1, // Numbers ([0-9])
-        minSpecialChars: 1, // Symbols (any character not in [a-zA-Z])
+        minSpecialChars: 1, // Symbols (any character not in [a-zA-Z0-9])
         minPasswordLength: 8, // Minimum password length
         maxConsecutiveRepeatingChars: 2, // Maximum consecutive repeating characters
         excess: 3,

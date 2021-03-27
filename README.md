@@ -20,7 +20,7 @@ debug                        | `false`     | Enable debug mode
 minUpperChars                | `1`         | Minimum uppercase characters required `[A-Z]`.
 minLowerChars                | `1`         | Minimum lowercase characters required `[a-z]`.
 minNumberChars               | `1`         | Minimum numbers required `[0-9]`.
-minSpecialChars              | `1`         | Minimum symbols required (any character not in `[a-zA-Z]`).
+minSpecialChars              | `1`         | Minimum symbols required (any character not in `[a-zA-Z0-9]`).
 minPasswordLength            | `8`         | Minimum password length required.
 maxConsecutiveRepeatingChars | `2`         | Maximum consecutive repeating characters allowed.
 lang                         | *See below* | Object with multi-language strings.
