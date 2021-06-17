@@ -2,6 +2,7 @@ module.exports = function passwordStrength(value, options) {
 
     let defaults = {
         debug: false,
+        allErrors: false, // Return all errors instead the first error found
         minUpperChars: 1, // Upper characters ([A-Z])
         minLowerChars: 1, // Lower characters ([a-z])
         minNumberChars: 1, // Numbers ([0-9])
@@ -148,57 +149,68 @@ module.exports = function passwordStrength(value, options) {
         let result = {
             success: false,
             key: 'error',
-            message: '',
+            message: [],
             color: ''
         };
 
-        if (value === '') {
-            result.message = settings.enterPassword;
+        if(strPassword === '') {
+            let message = lang.enterPassword;
+            result.message.push(message);
             result.color = colors.error;
-        } else if (charPassword.length < settings.minPasswordLength) {
-            result.message = settings.minPasswordLength !== 1 ? lang.minPasswordChars : lang.minPasswordChar;
-            result.message = format(result.message, settings.minPasswordLength);
+        }
+        if(charPassword.length < settings.minPasswordLength) {
+            let message = settings.minPasswordLength !== 1 ? lang.minPasswordChars : lang.minPasswordChar;
+            result.message.push(format(message, settings.minPasswordLength));
             result.color = colors.error;
-        } else if (num.lower < settings.minLowerChars) {
-            result.message = settings.minLowerChars !== 1 ? lang.minLowerChars : lang.minLowerChar;
-            result.message = format(result.message, settings.minLowerChars);
+        }
+        if(num.lower < settings.minLowerChars) {
+            let message = settings.minLowerChars !== 1 ? lang.minLowerChars : lang.minLowerChar;
+            result.message.push(format(message, settings.minLowerChars));
             result.color = colors.error;
-        } else if (num.upper < settings.minUpperChars) {
-            result.message = settings.minUpperChars !== 1 ? lang.minUpperChars : lang.minUpperChar;
-            result.message = format(result.message, settings.minUpperChars);
+        }
+        if(num.upper < settings.minUpperChars) {
+            let message = settings.minUpperChars !== 1 ? lang.minUpperChars : lang.minUpperChar;
+            result.message.push(format(message, settings.minUpperChars));
             result.color = colors.error;
-        } else if (num.numbers < settings.minNumberChars) {
-            result.message = settings.minNumberChars !== 1 ? lang.minNumberChars : lang.minNumberChar;
-            result.message = format(result.message, settings.minNumberChars);
+        }
+        if(num.numbers < settings.minNumberChars) {
+            let message = settings.minNumberChars !== 1 ? lang.minNumberChars : lang.minNumberChar;
+            result.message.push(format(message, settings.minNumberChars));
             result.color = colors.error;
-        } else if (num.symbols < settings.minSpecialChars) {
-            result.message = settings.minSpecialChars !== 1 ? lang.minSpecialChars : lang.minSpecialChar;
-            result.message = format(result.message, settings.minSpecialChars);
+        }
+        if(num.symbols < settings.minSpecialChars) {
+            let message = settings.minSpecialChars !== 1 ? lang.minSpecialChars : lang.minSpecialChar;
+            result.message.push(format(message, settings.minSpecialChars));
             result.color = colors.error;
-        } else if (settings.maxConsecutiveRepeatingChars > 1 && num.repeatingChars > settings.maxConsecutiveRepeatingChars) {
-            result.message = lang.maxConsecutiveRepeatingChars;
-            result.message = format(result.message, settings.maxConsecutiveRepeatingChars);
+        }
+        if(settings.maxConsecutiveRepeatingChars > 1 && num.repeatingChars > settings.maxConsecutiveRepeatingChars) {
+            let message = lang.maxConsecutiveRepeatingChars;
+            result.message.push(format(message, settings.maxConsecutiveRepeatingChars));
             result.color = colors.error;
-        } else if (score < 50) {
-            result.success = true;
-            result.key = 'weak';
-            result.message = lang.weak;
-            result.color = colors.weak;
-        } else if (score >= 50 && score < 75) {
-            result.success = true;
-            result.key = 'average';
-            result.message = lang.average;
-            result.color = colors.average;
-        } else if (score >= 75 && score < 100) {
-            result.success = true;
-            result.key = 'strong';
-            result.message = lang.strong;
-            result.color = colors.strong;
-        } else if (score >= 100) {
-            result.success = true;
-            result.key = 'secure';
-            result.message = lang.secure;
-            result.color = colors.secure;
+        }
+        
+        if(result.message.length === 0) {
+            if (score < 50) {
+                result.success = true;
+                result.key = 'weak';
+                result.message = lang.weak;
+                result.color = colors.weak;
+            } else if (score >= 50 && score < 75) {
+                result.success = true;
+                result.key = 'average';
+                result.message = lang.average;
+                result.color = colors.average;
+            } else if (score >= 75 && score < 100) {
+                result.success = true;
+                result.key = 'strong';
+                result.message = lang.strong;
+                result.color = colors.strong;
+            } else if (score >= 100) {
+                result.success = true;
+                result.key = 'secure';
+                result.message = lang.secure;
+                result.color = colors.secure;
+            }
         }
 
         if(settings.debug) {
@@ -215,6 +227,10 @@ module.exports = function passwordStrength(value, options) {
                          + 'Total score: ' + score;
 
             console.log(result.debug);
+        }
+
+        if(!result.success && !settings.allErrors) {
+            result.message = result.message.length > 0 ? result.message[0] : '';
         }
 
         return result;

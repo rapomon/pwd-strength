@@ -18,7 +18,7 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/pwd-strength/-/pwd-strength-1.0.6.tgz",
+  "_resolved": "https://registry.npmjs.org/pwd-strength/-/pwd-strength-1.1.1.tgz",
   "_shasum": "1ccc118c7a90b02d22c3ae1815af237321e32878",
   "_spec": "pwd-strength",
   "_where": "C:\\nodejs\\pwd-strength",
@@ -57,5 +57,5 @@
     "demo": "node ./index.js",
     "test": "tape ./test/*spec.js | tap-spec"
   },
-  "version": "1.0.6"
+  "version": "1.1.1"
 }

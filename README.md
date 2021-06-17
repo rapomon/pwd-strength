@@ -17,6 +17,7 @@ Here is a list of the settings currently available:
 Setting                      | Default     | Description
 ---------------------------- | ----------- | -------------------------------------------------------------
 debug                        | `false`     | Enable debug mode
+allErrors                    | `false`     | Show all errors found as an array instead the first one as string
 minUpperChars                | `1`         | Minimum uppercase characters required `[A-Z]`.
 minLowerChars                | `1`         | Minimum lowercase characters required `[a-z]`.
 minNumberChars               | `1`         | Minimum numbers required `[0-9]`.
@@ -36,6 +37,7 @@ weak                         | *Weak*
 average                      | *Average*
 strong                       | *Strong*
 secure                       | *Secure*
+enterPassword                | *Enter a password*
 minPasswordChar              | *At least %s character please*
 minPasswordChars             | *At least %s characters please*
 minLowerChar                 | *At least %s lowercase character please*
@@ -70,16 +72,47 @@ secure        | <span style="color:#007000;">#007000</span>
 
 The function returns an object as follows:
 
+### Error response
+
 ```js
     {
-        "success":false|true, // false if any error occurs, otherwise true
-        "key":"error|weak|average|strong|secure", // Indicates error or the strength
-        "message":"Error message or strength", // Multilanguage string with the error message or strength
-        "color":"#rrggbb" // Hex color depending on the key
+        "success": false, // any error occurs
+        "key": "error", // Indicates error
+        "message": "First error message found", // Multilanguage string with the error message
+        "color": "#rrggbb" // Hex color depending on the key
     }
 ```
 
-## Examples
+### Error response with `allErrors: true` setting
+
+```js
+    {
+        "success": false, // any error occurs
+        "key": "error", // Indicates error
+        "message": ["Error message 1", "Error message 2", "Error message 3", ...], // Multilanguage array of strings with the error messages
+        "color": "#rrggbb" // Hex color depending on the key
+    }
+```
+
+### Success response
+
+```js
+    {
+        "success": true, // no errors
+        "key": "weak|average|strong|secure", // Indicates the strength
+        "message": "Strength", // Multilanguage string with the strength
+        "color": "#rrggbb" // Hex color depending on the key
+    }
+```
+
+## Error examples
+
+Default settings, the first error checked will be the empty password:
+
+```js
+    console.log(passwordStrength(''));
+    // {"success":false,"key":"error","message":"Enter a password","color":"#ee0000"}
+```
 
 Default settings, the first error checked will be the password length:
 
@@ -122,6 +155,16 @@ Maximum consecutive repeating characters allowed:
     console.log(passwordStrength('TestTTTTest1', { maxConsecutiveRepeatingChars: 2 }));
     // {"success":false,"key":"error","message":"No more than 2 consecutive repeating characters or numbers please","color":"#ee0000"}
 ```
+
+With `allErrors: true` setting and the empty password, all possible errors will be shown, only in an error occurs (`success: false` in the response).
+This is the only case where the `message` property will be an array of strings.
+
+```js
+    console.log(passwordStrength('', { allErrors: true }));
+    // {"success":false,"key":"error","message":["Enter a password","At least 8 characters please","At least 1 lowercase character please","At least 1 uppercase character please","At least 1 number please","At least 1 special character please"],"color":"#ee0000"}
+```
+
+## Success examples
 
 Success result, with weak password:
 
