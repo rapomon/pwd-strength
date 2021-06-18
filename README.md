@@ -169,14 +169,14 @@ This is the only case where the `message` property will be an array of strings.
 Success result, with weak password:
 
 ```js
-    console.log(passwordStrength('testtest', { minUpperChars: 0, minSpecialChars: 0 }));
+    console.log(passwordStrength('testtest', { minUpperChars: 0, minSpecialChars: 0, minNumberChars: 0 }));
     // {"success":true,"key":"weak","message":"Weak","color":"#c43d4b"}
 ```
 
 Success result, with average password:
 
 ```js
-    console.log(passwordStrength('testest1', { minUpperChars: 0 }));
+    console.log(passwordStrength('testest1', { minUpperChars: 0, minSpecialChars: 0 }));
     // {"success":true,"key":"average","message":"Average","color":"#cc9900"}
 ```
 

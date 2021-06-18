@@ -1,7 +1,7 @@
 module.exports = function passwordStrength(value, options) {
 
     let defaults = {
-        debug: false,
+        debug: false, // Debug mode
         allErrors: false, // Return all errors instead the first error found
         minUpperChars: 1, // Upper characters ([A-Z])
         minLowerChars: 1, // Lower characters ([a-z])
@@ -76,6 +76,7 @@ module.exports = function passwordStrength(value, options) {
         for (let i=0; i < charPassword.length; i++) {
             let currentChar = charPassword[i];
 
+            // Counting chars
             if (currentChar.match(/[A-Z]/g)) {
                 num.upper++;
             } else if (currentChar.match(/[a-z]/g)) {
@@ -86,15 +87,14 @@ module.exports = function passwordStrength(value, options) {
                 num.symbols++;
             }
 
-            if(previousChar !== null && num.repeatingChars <= settings.maxConsecutiveRepeatingChars && charPassword[i] === previousChar) {
-                if(num.repeatingChars === 0) num.repeatingChars = 1;
-                num.repeatingChars++;
-            }
-            if(num.repeatingChars > settings.maxConsecutiveRepeatingChars) {
-                continue;
-            }
-            if(previousChar !== null && charPassword[i] !== previousChar) {
-                num.repeatingChars = 0;
+            // Repeating chars
+            if (previousChar !== null && num.repeatingChars <= settings.maxConsecutiveRepeatingChars) {
+                if (charPassword[i] === previousChar) {
+                    if (num.repeatingChars === 0) num.repeatingChars = 1;
+                    num.repeatingChars++;
+                } else {
+                    num.repeatingChars = 0;
+                }
             }
             previousChar = charPassword[i];
         }
@@ -123,7 +123,7 @@ module.exports = function passwordStrength(value, options) {
     }
 
     function format(msg, variable) {
-        if(typeof(msg) === 'string') {
+        if (typeof(msg) === 'string') {
             return msg.replace('%s', variable);
         } else {
             return '';
@@ -153,43 +153,43 @@ module.exports = function passwordStrength(value, options) {
             color: ''
         };
 
-        if(strPassword === '') {
+        if (strPassword === '') {
             let message = lang.enterPassword;
             result.message.push(message);
             result.color = colors.error;
         }
-        if(charPassword.length < settings.minPasswordLength) {
+        if (charPassword.length < settings.minPasswordLength) {
             let message = settings.minPasswordLength !== 1 ? lang.minPasswordChars : lang.minPasswordChar;
             result.message.push(format(message, settings.minPasswordLength));
             result.color = colors.error;
         }
-        if(num.lower < settings.minLowerChars) {
+        if (num.lower < settings.minLowerChars) {
             let message = settings.minLowerChars !== 1 ? lang.minLowerChars : lang.minLowerChar;
             result.message.push(format(message, settings.minLowerChars));
             result.color = colors.error;
         }
-        if(num.upper < settings.minUpperChars) {
+        if (num.upper < settings.minUpperChars) {
             let message = settings.minUpperChars !== 1 ? lang.minUpperChars : lang.minUpperChar;
             result.message.push(format(message, settings.minUpperChars));
             result.color = colors.error;
         }
-        if(num.numbers < settings.minNumberChars) {
+        if (num.numbers < settings.minNumberChars) {
             let message = settings.minNumberChars !== 1 ? lang.minNumberChars : lang.minNumberChar;
             result.message.push(format(message, settings.minNumberChars));
             result.color = colors.error;
         }
-        if(num.symbols < settings.minSpecialChars) {
+        if (num.symbols < settings.minSpecialChars) {
             let message = settings.minSpecialChars !== 1 ? lang.minSpecialChars : lang.minSpecialChar;
             result.message.push(format(message, settings.minSpecialChars));
             result.color = colors.error;
         }
-        if(settings.maxConsecutiveRepeatingChars > 1 && num.repeatingChars > settings.maxConsecutiveRepeatingChars) {
+        if (settings.maxConsecutiveRepeatingChars > 1 && num.repeatingChars > settings.maxConsecutiveRepeatingChars) {
             let message = lang.maxConsecutiveRepeatingChars;
             result.message.push(format(message, settings.maxConsecutiveRepeatingChars));
             result.color = colors.error;
         }
         
-        if(result.message.length === 0) {
+        if (result.message.length === 0) {
             if (score < 50) {
                 result.success = true;
                 result.key = 'weak';
@@ -213,9 +213,9 @@ module.exports = function passwordStrength(value, options) {
             }
         }
 
-        if(settings.debug) {
+        if (settings.debug) {
             
-            result.debug = 'Base score:' + baseScore  + '\n'
+            result.debug = 'Base score: ' + baseScore  + '\n'
                          + 'Length bonus: ' + (num.excess*settings.excess) + ' ['+num.excess+'x'+settings.excess+']\n'
                          + 'Upper case bonus: ' + (num.upper*settings.minUpperChars) + ' ['+num.upper+'x'+settings.minUpperChars+']\n'
                          + 'Lower case bonus: ' + (num.lower*settings.minLowerChars) + ' ['+num.lower+'x'+settings.minLowerChars+']\n'
@@ -229,23 +229,23 @@ module.exports = function passwordStrength(value, options) {
             console.log(result.debug);
         }
 
-        if(!result.success && !settings.allErrors) {
+        if (!result.success && !settings.allErrors) {
             result.message = result.message.length > 0 ? result.message[0] : '';
         }
 
         return result;
-
     }
 
     init();
 
     if (charPassword.length >= settings.minPasswordLength) {
         baseScore = 50;
-        analyzeString();
-        calcComplexity();
     } else {
         baseScore = 0;
     }
+
+    analyzeString();
+    calcComplexity();
 
     return outputResult();
 

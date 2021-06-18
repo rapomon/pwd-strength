@@ -11,6 +11,7 @@ function test(title, password, options = {}) {
     process.stdout.write('\n');
 }
 
+// Error examples
 test('Empty password', '');
 test('Min password length', 'test');
 test('Min upper chars', 'testtest', { minUpperChars: 1 });
@@ -19,7 +20,9 @@ test('Min numbers', 'TestTest', { minNumberChars: 1 });
 test('Min special chars', 'TestTest1', { minSpecialChars: 1 });
 test('Max consecutive repeating chars', 'TestTTTTest1!', { maxConsecutiveRepeatingChars: 2 });
 test('Empty password with all possible errors', '', { allErrors: true });
-test('Weak password', 'testtest', { minUpperChars: 0, minNumberChars: 0, minSpecialChars: 0 });
-test('Average password', 'testest1', { minUpperChars: 0, minNumberChars: 0, minSpecialChars: 0 });
+
+// Success examples
+test('Weak password', 'testtest', { minUpperChars: 0, minSpecialChars: 0, minNumberChars: 0 });
+test('Average password', 'testest1', { minUpperChars: 0, minSpecialChars: 0 });
 test('Strong password', 'TestTest1!');
 test('Secure password', 'Test123%$/)=!');
